@@ -4,24 +4,26 @@ declare(strict_types=1);
 namespace N1215\Larabread;
 
 use ArrayIterator;
+use Countable;
 use IteratorAggregate;
+use JsonSerializable;
 use Traversable;
 
 /**
  * Class BreadcrumbList
  * @package N1215\Larabread
  */
-final class BreadcrumbList implements IteratorAggregate, BreadcrumbListInterface
+final class BreadcrumbList implements IteratorAggregate, Countable, JsonSerializable
 {
     /**
-     * @var BreadcrumbInterface[]
+     * @var Breadcrumb[]
      */
     private $breadcrumbs;
 
     /**
-     * @param BreadcrumbInterface[] $breadcrumbs
+     * @param Breadcrumb[] $breadcrumbs
      */
-    public function __construct(BreadcrumbInterface ...$breadcrumbs)
+    public function __construct(Breadcrumb ...$breadcrumbs)
     {
         $this->breadcrumbs = $breadcrumbs;
     }
@@ -32,7 +34,7 @@ final class BreadcrumbList implements IteratorAggregate, BreadcrumbListInterface
      * @param array $attributes
      * @return BreadcrumbList
      */
-    public function add(string $title, ?string $url = null, array $attributes = []): BreadcrumbListInterface
+    public function add(string $title, ?string $url = null, array $attributes = []): BreadcrumbList
     {
         $newBreadcrumbs = array_merge($this->breadcrumbs, [new Breadcrumb($title, $url, $attributes)]);
         return new self(...$newBreadcrumbs);
@@ -54,23 +56,27 @@ final class BreadcrumbList implements IteratorAggregate, BreadcrumbListInterface
         return count($this->breadcrumbs);
     }
 
-    public function get(int $index): ?BreadcrumbInterface
+    /**
+     * @param int $index
+     * @return Breadcrumb|null
+     */
+    public function get(int $index): ?Breadcrumb
     {
         return $this->breadcrumbs[$index] ?? null;
     }
 
     /**
-     * @return BreadcrumbInterface|null
+     * @return Breadcrumb|null
      */
-    public function first(): ?BreadcrumbInterface
+    public function first(): ?Breadcrumb
     {
         return $this->breadcrumbs[0] ?? null;
     }
 
     /**
-     * @return BreadcrumbInterface|null
+     * @return Breadcrumb|null
      */
-    public function last(): ?BreadcrumbInterface
+    public function last(): ?Breadcrumb
     {
         $count = count($this->breadcrumbs);
         return $this->breadcrumbs[$count - 1];
@@ -85,7 +91,7 @@ final class BreadcrumbList implements IteratorAggregate, BreadcrumbListInterface
     }
 
     /**
-     * @return array
+     * @return Breadcrumb[]
      */
     public function toArray(): array
     {
@@ -93,11 +99,11 @@ final class BreadcrumbList implements IteratorAggregate, BreadcrumbListInterface
     }
 
     /**
-     * @return mixed|void
+     * @return array
      */
     public function jsonSerialize()
     {
-        return array_map(function (BreadcrumbInterface $breadcrumb) {
+        return array_map(function (Breadcrumb $breadcrumb) {
             return $breadcrumb->jsonSerialize();
         }, $this->breadcrumbs);
     }

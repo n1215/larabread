@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace N1215\Larabread;
 
+use JsonSerializable;
 use stdClass;
 
 /**
  * Class Breadcrumb
  * @package App\Breadcrumb\ClassBased
  */
-final class Breadcrumb implements BreadcrumbInterface
+final class Breadcrumb implements JsonSerializable
 {
     /**
      * @var string

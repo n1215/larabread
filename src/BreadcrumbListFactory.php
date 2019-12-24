@@ -10,10 +10,10 @@ namespace N1215\Larabread;
 class BreadcrumbListFactory
 {
     /**
-     * @param BreadcrumbInterface ...$breadcrumbs
-     * @return BreadcrumbListInterface
+     * @param Breadcrumb ...$breadcrumbs
+     * @return BreadcrumbList
      */
-    public function make(BreadcrumbInterface ...$breadcrumbs): BreadcrumbListInterface
+    public function make(Breadcrumb ...$breadcrumbs): BreadcrumbList
     {
         return new BreadcrumbList(...$breadcrumbs);
     }

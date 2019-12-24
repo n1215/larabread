@@ -1,6 +1,6 @@
 {
     "name": "n1215/larabread",
-    "description": "IDE-friendly breadcrumbs library for Laravel",
+    "description": "An IDE-friendly Breadcrumbs package for Laravel",
     "keywords": [
         "psr-11",
         "breadcrumbs",

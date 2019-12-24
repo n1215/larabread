@@ -13,7 +13,7 @@ use InvalidArgumentException;
 class BreadcrumbManager
 {
     /**
-     * @var BreadcrumbListInterface
+     * @var BreadcrumbList
      */
     private $breadcrumbs;
 
@@ -31,15 +31,15 @@ class BreadcrumbManager
     }
 
     /**
-     * @return BreadcrumbListInterface|null
+     * @return BreadcrumbList|null
      */
-    public function get(): ?BreadcrumbListInterface
+    public function get(): ?BreadcrumbList
     {
         return $this->breadcrumbs;
     }
 
     /**
-     * @param BreadcrumbListInterface|array|string|callable $trailKey
+     * @param BreadcrumbList|array|string|callable $trailKey
      * @param mixed ...$arguments
      * @return void
      */
@@ -51,11 +51,11 @@ class BreadcrumbManager
     /**
      * @param array|string|callable $trailKey
      * @param mixed ...$arguments
-     * @return BreadcrumbListInterface
+     * @return BreadcrumbList
      */
-    public function make($trailKey, ...$arguments): BreadcrumbListInterface
+    public function make($trailKey, ...$arguments): BreadcrumbList
     {
-        if ($trailKey instanceof BreadcrumbListInterface) {
+        if ($trailKey instanceof BreadcrumbList) {
             return $trailKey;
         }
 
