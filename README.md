@@ -652,7 +652,7 @@ Publish packages's config to config/larabread.php.
 php artisan vendor:publish --tag=larabread-config
 ```
 
-### 6-2. Change config file
+#### 6-2. Change config file
 
 - config/larabread.pph
 
@@ -671,7 +671,7 @@ return [
 ];
 ```
 
-### 6-3 Write your own template file
+#### 6-3 Write your own template file
 
 - resources/vies/elements/breadcrumbs.blade.php
 
@@ -698,7 +698,7 @@ return [
 ```
 
 
-### 6-4. Custom attribute
+#### 6-4. Custom attribute
 
 The third arguments of BreadcrumbList::add() is attributes for your own customization.
 For example, add an icon image url.
