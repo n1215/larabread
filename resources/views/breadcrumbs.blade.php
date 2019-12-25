@@ -1,7 +1,7 @@
 @php
     /**
-     * @var \N1215\Larabread\BreadcrumbListInterface $breadcrumbs
-     * @var \N1215\Larabread\BreadcrumbInterface $breadcrumb
+     * @var \N1215\Larabread\BreadcrumbList $breadcrumbs
+     * @var \N1215\Larabread\Breadcrumb $breadcrumb
      */
 @endphp
 @if (isset($breadcrumbs) && !$breadcrumbs->isEmpty())
