@@ -12,12 +12,14 @@ composer require n1215/larabread
 
 ### 1. Factory and method chain 
 
-routes/web.php
+- routes/web.php
+
 ```
 Route::get('path/to/page', 'AppController@page');
 ```
 
-app/Http/Controllers/AppController.php
+- app/Http/Controllers/AppController.php
+
 ```php
 <?php
 declare(strict_types=1);
@@ -44,7 +46,7 @@ class AppController
 }
 ```
 
-resources/views/page.blade.php
+- resources/views/page.blade.php
 
 ```html
 <!DOCTYPE HTML>
@@ -78,9 +80,9 @@ HTML is rendered with default template (using bootstrap4 css classes).
 ### 2. Trail classes
 You can define breadcrumbs outside of controller by making POPO class called "Trail".
 
-app/Http/Breadcrumbs/AppTrail.php
-
 #### 2-1. Simple Trail
+
+- app/Http/Breadcrumbs/AppTrail.php
 
 ```php
 <?php
@@ -117,7 +119,7 @@ class AppTrail
 
 ```
 
-app/Http/Controllers/AppController.php
+- app/Http/Controllers/AppController.php
 
 ```php
 <?php
@@ -142,7 +144,7 @@ class AppController
 #### 2-2. Nested definition
 You can reuse other BreadcrumbList by method chain
 
-app/Http/Breadcrumbs/AppTrail.php
+- app/Http/Breadcrumbs/AppTrail.php
 
 ```php
 <?php
@@ -190,7 +192,8 @@ class AppTrail
 ```
 
 
-app/Http/Controllers/AppController.php
+- app/Http/Controllers/AppController.php
+
 ```php
 <?php
 declare(strict_types=1);
@@ -207,7 +210,7 @@ class AppController
      */
     private $trail;
 
-    public function __construct($trail)
+    public function __construct(AppTrail $trail)
     {
         $this->trail = $trail;
     }
@@ -227,9 +230,9 @@ class AppController
         return view('to', ['breadcrumbs' => $this->trail->to()]);
     }
 
-    public function page(AppTrail $trail): View
+    public function page(): View
     {
-        return view('to', ['breadcrumbs' => $trail->page()]);
+        return view('to', ['breadcrumbs' => $this->trail->page()]);
     }
 }
 
@@ -238,7 +241,8 @@ class AppController
 #### 2-3. Nested definitions by Constructor Injection
 You can separate definitions into multiple Trail classes.
 
-app/Http/Breadcrumbs/HomeTrail.php
+- app/Http/Breadcrumbs/HomeTrail.php
+
 ```php
 <?php
 declare(strict_types=1);
@@ -268,7 +272,8 @@ class HomeTrail
 
 ```
 
-app/Http/Breadcrumbs/PathTrail.php
+- app/Http/Breadcrumbs/PathTrail.php
+
 ```php
 <?php
 declare(strict_types=1);
@@ -284,6 +289,7 @@ class PathTrail
      */
     private $from;
 
+    // inject HomeTrail in the constructor
     public function __construct(HomeTrail $from)
     {
         $this->from = $from;
@@ -298,9 +304,10 @@ class PathTrail
 ```
 
 
-Parent-Child relationship of Trail classes is resolved by dependency injection and autowiring.
+Parent-Child relationship of Trail classes is resolved by the service container and autowiring.
 
-app/Http/Controllers/AppController.php
+- app/Http/Controllers/AppController.php
+
 ```php
 <?php
 declare(strict_types=1);
@@ -326,10 +333,10 @@ class AppController
 
 ```
 
-### 3. create BreadcrumbList in other ways.
+### 3. Create BreadcrumbList in other ways.
 Simple blog system example using Category and Post models.
 
-routes/web.php
+- routes/web.php
 
 ```php
 Route::get('home', 'AppController@home')->name('home');
@@ -341,7 +348,7 @@ Route::get('categories/{category}/posts', 'PostsController@index')->name('catego
 Route::get('categories/{category}/posts/{post}', 'PostsController@show')->name('categories.posts.show');
 ```
 
-app/Models/Post.php
+- app/Models/Post.php
 ```php
 <?php
 declare(strict_types=1);
@@ -368,7 +375,7 @@ class Post extends Model
 }
 ```
 
-app/Models/Category.php
+- app/Models/Category.php
 ```php
 <?php
 declare(strict_types=1);
@@ -395,7 +402,7 @@ class Category extends Model
 ```
 
 
-app/Http/Breadcrumbs/HomeTrail.php
+- app/Http/Breadcrumbs/HomeTrail.php
 
 ```php
 <?php
@@ -425,7 +432,7 @@ class HomeTrail
 }
 ```
 
-app/Http/Breadcrumbs/CategoriesTrail.php
+- app/Http/Breadcrumbs/CategoriesTrail.php
 ```php
 <?php
 declare(strict_types=1);
@@ -453,6 +460,7 @@ class CategoriesTrail
             ->add('Categories', route('categories.index'));
     }
 
+    // any parameters can be passed to Trail methods
     public function show(Category $category): BreadcrumbList
     {
         return $this->index()
@@ -461,7 +469,7 @@ class CategoriesTrail
 }
 ```
 
-app/Http/Breadcrumbs/PostTrail.php
+- app/Http/Breadcrumbs/PostTrail.php
 ```php
 <?php
 declare(strict_types=1);
@@ -484,7 +492,6 @@ class PostsTrail
         $this->from = $from;
     }
 
-    // any parameter can be passed to Trail methods
     public function index(Category $category): BreadcrumbList
     {
         return $this->from->show($category)
@@ -500,7 +507,7 @@ class PostsTrail
 
 ```
 
-app/Http/Controllers/PostsController.php
+- app/Http/Controllers/PostsController.php
 
 You can make BreadcrumbList in 4 ways
 
@@ -590,7 +597,7 @@ You can make BreadcrumbList directly in Blade templates.
 
 ### 5. set current BreadcrumbsList
 
-resources/layouts/default.blade.php
+- resources/layouts/default.blade.php
 
 Include the breadcrumbs template in your layout file.
 
@@ -647,7 +654,7 @@ php artisan vendor:publish --tag=larabread-config
 
 ### 6-2. Change config file
 
-config/larabread.pph
+- config/larabread.pph
 
 ```php
 <?php
@@ -666,7 +673,8 @@ return [
 
 ### 6-3 Write your own template file
 
-resources/vies/elements/breadcrumbs.blade.php
+- resources/vies/elements/breadcrumbs.blade.php
+
 ```html
 @php
     /**
@@ -725,6 +733,12 @@ class PathTrail
 use the attribute by Breadcrumb::getAttribute() method.
 
 ```html
+@php
+    /**
+     * @var \N1215\Larabread\BreadcrumbListInterface $breadcrumbs
+     * @var \N1215\Larabread\BreadcrumbInterface $breadcrumb
+     */
+@endphp
 @if (isset($breadcrumbs) && !$breadcrumbs->isEmpty())
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
