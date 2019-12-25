@@ -588,7 +588,7 @@ You can make BreadcrumbList directly in Blade templates.
     $breadcrumbs = Breadcrumbs::make([\App\Http\Breadcrumbs\PostsTrail::class, 'show'], $post);
 
     // using helper
-    $breadcrumbs = breadcrumbs()->make(\App\Http\Breadcrumbs\PostsTrail::class, 'show', $post);
+    $breadcrumbs = breadcrumbs()->make([\App\Http\Breadcrumbs\PostsTrail::class, 'show'], $post);
 @endphp
 
 @include(config('larabread.templates.default'))
