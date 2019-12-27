@@ -48,23 +48,14 @@ class AppController
 
 - resources/views/page.blade.php
 
-```html
-<!DOCTYPE HTML>
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>Page</title>
-</head>
-<body>
+```blade
 
 // include default template
 @include(config('larabread.templates.default'))
 
-</body>
-</html>
 ```
 
-HTML is rendered with default template (using bootstrap4 css classes).
+HTML is rendered with [the default template](resources/views/breadcrumbs.blade.php) (using bootstrap4 css classes).
 
 ```html
 <nav aria-label="breadcrumb">
@@ -304,7 +295,7 @@ class PathTrail
 ```
 
 
-Parent-Child relationship of Trail classes is resolved by the service container and autowiring.
+Parent-Child relationship of Trail classes is resolved by the service container and auto-wiring.
 
 - app/Http/Controllers/AppController.php
 
@@ -334,7 +325,7 @@ class AppController
 ```
 
 ### 3. Create BreadcrumbList in other ways.
-Simple blog system example using Category and Post models.
+A simple blog system example using Category and Post models.
 
 - routes/web.php
 
@@ -445,11 +436,11 @@ use N1215\Larabread\BreadcrumbList;
 class CategoriesTrail
 {
     /**
-     * @var RootTrail
+     * @var HomeTrail
      */
     private $from;
 
-    public function __construct(RootTrail $from)
+    public function __construct(HomeTrail $from)
     {
         $this->from = $from;
     }
@@ -512,7 +503,7 @@ class PostsTrail
 You can make BreadcrumbList in 4 ways
 
 - (1) use injected Trail class
-- (2) use injected BreadcrumbManager clas
+- (2) use injected BreadcrumbManager class
 - (3) use Breadcrumbs Facade
 - (4) use breadcrumbs() helper
 
@@ -582,7 +573,7 @@ class PostsController
 ### 4. Make BreadcrumbList in Blade templates.
 You can make BreadcrumbList directly in Blade templates.
 
-```HTML
+```blade
 @php
     // using Facade
     $breadcrumbs = Breadcrumbs::make([\App\Http\Breadcrumbs\PostsTrail::class, 'show'], $post);
@@ -595,13 +586,15 @@ You can make BreadcrumbList directly in Blade templates.
 
 ```
 
-### 5. set current BreadcrumbsList
+### 5. Set current BreadcrumbsList
+
+BreadcrumbManager can hold a BreadcrumbsList for current request.
 
 - resources/layouts/default.blade.php
 
 Include the breadcrumbs template in your layout file.
 
-```html
+```blade
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -619,13 +612,13 @@ Include the breadcrumbs template in your layout file.
 </html>
 ```
 
-Call BreadcrumbManager::set() in child template via Facade or helper.
-Arguments are same as ones of BreadcrumbManager::make().
+Call BreadcrumbManager::set() in a child template via Facade or helper.
+The Arguments are the same as ones of BreadcrumbManager::make().
 
 After setting current BreadcrumbList, it's possible to get it by BreadcrumbManager::get() and the current BreadcrumbList is automatically added to the breadcrumbs template via a view composer.
 
 
-```html
+```blade
 @extends('layouts.default')
 
 @php
@@ -675,7 +668,7 @@ return [
 
 - resources/vies/elements/breadcrumbs.blade.php
 
-```html
+```blade
 @php
     /**
      * @var \N1215\Larabread\BreadcrumbList $breadcrumbs
@@ -732,7 +725,7 @@ class PathTrail
 
 use the attribute by Breadcrumb::getAttribute() method.
 
-```html
+```blade
 @php
     /**
      * @var \N1215\Larabread\BreadcrumbList $breadcrumbs
